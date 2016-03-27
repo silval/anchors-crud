@@ -1,0 +1,341 @@
+[
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1,
+       "allow_box" : false
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.336942, -47.17451]},
+   "obs" : "",
+   "buffer" : 20
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1,
+       "allow_box" : true
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.33664, -47.174761]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1,
+       "allow_box" : true
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.336407, -47.174992]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.336228, -47.175162]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.335972, -47.175388]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.335739, -47.175629]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.335481, -47.175830]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.335347, -47.175973]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.335183, -47.175823]},
+   "obs" : "",
+   "buffer" : 20
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.335018, -47.175579]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.334787, -47.175335]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.334600, -47.175109]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.334390, -47.174845]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.334180, -47.174584]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.333957, -47.174325]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.333765, -47.174100]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.333566, -47.173848]},
+   "obs" : "",
+   "buffer" : 20
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.333381, -47.173636]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.333188, -47.173372]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.332951, -47.173093]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.332735, -47.172838]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "_id" : "300000001",
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.332573, -47.172617]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.332354, -47.172333]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000002",
+       "description" : "Ancoragem cordoalha",
+       "cost" : 0
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.332281, -47.172257]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type" : "Point", "coordinates" : [ -22.332172, -47.172372]},
+   "obs" : "",
+   "buffer" : 20,
+   "boxes" : [ {
+       "object_id" : 0,
+     "name" : "CE0001",
+     "qrcode" : 1,
+     "type" : 0
+     }
+   ]
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.331974, -47.172587]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.332861, -47.172478]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.3334028, -47.1720417]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000002",
+       "description" : "Ancoragem cordoalha",
+       "cost" : 0
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.3336556, -47.1718194]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.3332361, -47.1713056]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "type" : {
+       "object_id" : "100000001",
+       "description" : "Poste",
+       "cost" : 1
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.3337167, -47.1708556]},
+   "obs" : "",
+   "buffer" : 0
+},
+{
+   "_id" : "300000002",
+   "type" : {
+       "object_id" : "100000003",
+       "description" : "Rack",
+       "cost" : 0
+   },
+   "loc" : { "type": "Point", "coordinates": [ -22.337172, -47.174594]},
+   "obs" : "",
+   "buffer" : 0,
+   "boxes" : [ {
+       "object_id" : 0,
+     "name" : "Rack Neolink",
+     "qrcode" : 2,
+     "type" : 0
+     }
+   ]
+}
+]
