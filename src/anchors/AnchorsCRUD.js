@@ -27,7 +27,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride());
 
-app.get('/listAnchors', anchorsObj.listAnchors);
+app.get('/listAnchors', anchorsObj.findAnchors);
+app.get('/getAnchor/:id', anchorsObj.getAnchor);
+app.get('/findAnchors', anchorsObj.findAnchors);
 app.post('/addAnchor', anchorsObj.addAnchor);
 app.put('/editAnchor/:id', anchorsObj.editAnchor);
 app.delete('/delAnchor/:id', anchorsObj.delAnchor);

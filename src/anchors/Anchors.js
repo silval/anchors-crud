@@ -1,5 +1,6 @@
 var mongoskin = require('mongoskin');
 var AnchorsConfig = require('./AnchorsConfig');
+// var Messages = require('./../nls/NLS');
 
 function Anchors() {
    this.db = null;
@@ -23,29 +24,6 @@ Anchors.prototype.getDB = function(dbUrl) {
   return true;
 };
 
-// listAnchors: retrieves anchor records from the DB.
-// URL parameters allowed:
-//   page: page number to retrieve. Default: 1
-//   pageSize: number of records retrieved per page. Default defined by AnchorsConfig.PageSize.
-// Example: /listAnchors?page=2&pageSize=7
-// Returns a JSON object containing attributes "data", "page" and "pageSize"
-//
-Anchors.prototype.listAnchors = function (req, res, next) {
-  // console.log("in listAnchors. Collections=",this.collections);
-  // console.log("req=",req);
-  var pageNumber = req.query.page || "1";
-  var pageSize = req.query.pageSize || AnchorsConfig.PageSize;
-
-  if (pageNumber<=0) {
-     return next("Page number must be higher than 0");
-  }
-
-  req.collections.anchors.find({}).skip((parseInt(pageNumber)-1)*parseInt(pageSize)).limit(parseInt(pageSize)).toArray(function(error, anchors) {
-    if (error) return next(error);
-    res.sendStatus( JSON.stringify({ "data" : anchors, "page" : pageNumber, "pageSize" : pageSize }) );
-  });
-
-}
 
 //
 // addAnchor: adds a new anchor record to the DB.
@@ -53,17 +31,19 @@ Anchors.prototype.listAnchors = function (req, res, next) {
 //
 Anchors.prototype.addAnchor = function (req, res, next) {
 
+  // var messages = new Messages();
+
   // curl --data 'anchor={"type":{"object_id":"100000001","description":"Poste","cost":1,"allow_box":false},"loc":{"type":"Point","coordinates":[-22.3364,-47.274]},"obs":"Try 1","buffer":0}' http://127.0.0.1:8085/addAnchor
   // var newAnchor= {type : {object_id : '100000001',description : 'Poste',cost : 1,allow_box : false}, loc : { type: 'Point', coordinates: [ -22.336400, -47.27400]},obs : 'Try 1',buffer : 0};
-  if (!req.body.anchor) return next(new Error('No anchor payload provided.'));
+  if (!req.body.anchor) return next('NO_RECORD_PAYLOAD_PROVIDED');
 
   var anchor = req.body.anchor;
 
-  try {
-    anchor = JSON.parse(anchor);
-  } catch (exc) {
-    return next("Error parsing input JSON object. "+exc);
-  }
+  // try {
+  //   anchor = JSON.parse(anchor);
+  // } catch (exc) {
+  //   return next("JSON_PARSING_ERROR"+" "+exc);
+  // }
 
   // TBD validate anchor data fields
   // Required: loc, type
@@ -86,7 +66,7 @@ Anchors.prototype.addAnchor = function (req, res, next) {
 Anchors.prototype.delAnchor = function (req, res, next) {
 
   // curl -X DELETE http://127.0.0.1:8085/delAnchor/56f71173fbef73c13744f91b
-  if (!req.params.id) return next(new Error('No anchor ID provided.'));
+  if (!req.params.id) return next("NO_RECORD_ID_PROVIDED");
   // console.log("req.params.id="+req.params.id);
 
   req.collections.anchors.removeById(req.params.id, function(error, count) {
@@ -96,7 +76,6 @@ Anchors.prototype.delAnchor = function (req, res, next) {
   });
 };
 
-
 //
 // editAnchor: updates an existing anchor record in the DB.
 // Returns a JSON object  - see example further below
@@ -104,22 +83,21 @@ Anchors.prototype.delAnchor = function (req, res, next) {
 Anchors.prototype.editAnchor = function (req, res, next) {
 
   // curl -X PUT -d 'anchor={"buffer":30}' http://127.0.0.1:8085/editAnchor/56f71579e3093b1539f5bb80
-  if (!req.params.id) return next(new Error('No anchor ID provided.'));
-  if (!req.body.anchor) return next(new Error('No updated anchor payload provided.'));
-  console.log("req.params.id="+req.params.id);
+  if (!req.params.id) return next("NO_RECORD_ID_PROVIDED");
+  if (!req.body.anchor) return next("NO_RECORD_PAYLOAD_PROVIDED");
 
   var anchor = req.body.anchor;
 
-  try {
-    anchor = JSON.parse(anchor);
-  } catch (exc) {
-    return next("Error parsing input JSON object. "+exc);
-  }
+  // try {
+  //   anchor = JSON.parse(anchor);
+  // } catch (exc) {
+  //   return next("JSON_PARSING_ERROR"+" "+exc);
+  // }
 
   // TBD validate anchor data fields
   // Required: loc, type
 
-  console.log("req.body.anchor=",anchor);
+  // console.log("req.body.anchor=",anchor);
 
   req.collections.anchors.updateById(req.params.id, {$set: anchor}, function(error, count) {
     if (error) return next(error);
@@ -128,12 +106,65 @@ Anchors.prototype.editAnchor = function (req, res, next) {
   });
 };
 
-Anchors.prototype.findAnchor = function(anchorID) {
-  if (typeof anchorID == 'undefined') {
-    return null;
+//
+// getAnchor: get one single record of an existing anchor in the DB.
+// Parameter required in the URL: object ID of record. Example: /getAnchor/56f709379a96f6580174f7cd
+// Returns a JSON object  - see example further below
+//
+Anchors.prototype.getAnchor = function (req, res, next) {
+
+  // curl -X GET http://127.0.0.1:8085/getAnchor/56f709379a96f6580174f7cd
+  if (!req.params.id) return next("NO_RECORD_ID_PROVIDED");
+  // console.log("req.body.anchor=",anchor);
+
+  req.collections.anchors.findById(req.params.id, function(error, recordResponse) {
+    if (error) return next(error);
+    res.sendStatus(JSON.stringify({ "data" : recordResponse}));
+    // example of return: { "data": { "_id": "56f709379a96f6580174f7cd", "type": { ... } )
+    // example of not found returned: { "data": null )
+  });
+};
+
+//
+// findAnchors: get existing records of anchors in the DB based on a query object.
+// Optional parameterURL: q: query string, page, pageSize
+// Returns a JSON object  - see example further below
+//
+Anchors.prototype.findAnchors = function (req, res, next) {
+
+  // curl -X GET http://127.0.0.1:8085/findAnchors
+  // curl -X GET http://127.0.0.1:8085/findAnchors?q={"type.description" : "Rack"}
+  var query = {};
+
+  if (req.query && req.query.q && req.query.q!="") {
+    try {
+      query = JSON.parse(req.query.q);
+    } catch (exc) {
+      return next("JSON_PARSING_ERROR"+" "+exc);
+    }
+
+  };
+
+  // console.log("req.query.q=",req.query.q);
+  // console.log("query=",query);
+  // console.log("type of query=",typeof query);
+
+
+  var pageNumber = req.query.page || "1";
+  var pageSize = req.query.pageSize || AnchorsConfig.PageSize;
+  // var messages = new Messages();
+
+  if (pageNumber<=0) {
+     return next("PAGE_NUMBER_INVALID");
   }
 
-  return "";
-};
+  req.collections.anchors.find(query).skip((parseInt(pageNumber)-1)*parseInt(pageSize)).limit(parseInt(pageSize)).toArray(function(error, anchors) {
+    if (error) return next(error);
+    res.sendStatus( JSON.stringify({ "data" : anchors, "page" : pageNumber, "pageSize" : pageSize }) );
+  });
+
+}
+
+
 
 module.exports = Anchors;
