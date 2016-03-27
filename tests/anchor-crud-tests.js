@@ -32,18 +32,10 @@ describe('Anchors CRUD Unit tests', function() {
     expect(anchorsObj.findAnchors({ "query" : { "page" : "0", "q" : "{ 'hello' }"}},null,function(msg){ return msg})).to.have.string("JSON_PARSING_ERROR");
   });
 
-  // it('findAnchors() should return JSON_PARSING_ERROR error if malformed query json object is in request', function() {
-  //   expect(anchorsObj.findAnchors({ "params" : { "query" : {}, bla: 1} },null,function(msg){ return msg})).to.have.string("JSON_PARSING_ERROR");
-  // });
-
   // ADD
   it('addAnchor() should return NO_RECORD_PAYLOAD_PROVIDED error if no anchor json object is in request', function() {
     expect(anchorsObj.addAnchor({ "body" : {} },null,function(msg){ return msg})).to.be.equal("NO_RECORD_PAYLOAD_PROVIDED");
   });
-
-  // it('addAnchor() should return JSON_PARSING_ERROR error if malformed anchor json object is in request', function() {
-  //   expect(anchorsObj.addAnchor({ "body" : { "anchor" : "test", bla: 1} },null,function(msg){ return msg})).to.have.string("JSON_PARSING_ERROR");
-  // });
 
   // DELETE
   it('delAnchor() should return NO_RECORD_ID_PROVIDED error if no object ID is in request', function() {
@@ -58,10 +50,5 @@ describe('Anchors CRUD Unit tests', function() {
   it('editAnchor() should return NO_RECORD_PAYLOAD_PROVIDED error if no object ID is in request', function() {
     expect(anchorsObj.editAnchor({ "body" : {}, "params" : { "id" : "1"} },null,function(msg){ return msg})).to.be.equal("NO_RECORD_PAYLOAD_PROVIDED");
   });
-
-  // it('editAnchor() should return JSON_PARSING_ERROR error if malformed anchor json object is in request', function() {
-  //   expect(anchorsObj.editAnchor({ "body" : {"anchor" : "test", bla: 1}, "params" : { "id" : "1"} },null,function(msg){ return msg})).to.have.string("JSON_PARSING_ERROR");
-  // });
-
 
 });

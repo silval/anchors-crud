@@ -16,7 +16,8 @@ Anchors.prototype.getDB = function(dbUrl) {
   // console.log("In getDB, initiating DB  "+this.dbUrl);
   this.db = mongoskin.db(dbUrl, {safe: true});
   this.collections = {
-     "anchors" : this.db.collection('anchors')
+    "anchors" : this.db.collection('anchors'),
+    "anchor_types" : this.db.collection('anchor_types')
    };
 
   // TBD How to check if DB or collection does not exist?
@@ -24,26 +25,17 @@ Anchors.prototype.getDB = function(dbUrl) {
   return true;
 };
 
-
 //
 // addAnchor: adds a new anchor record to the DB.
 // Returns a JSON object  - see example further below
 //
 Anchors.prototype.addAnchor = function (req, res, next) {
 
-  // var messages = new Messages();
-
   // curl --data 'anchor={"type":{"object_id":"100000001","description":"Poste","cost":1,"allow_box":false},"loc":{"type":"Point","coordinates":[-22.3364,-47.274]},"obs":"Try 1","buffer":0}' http://127.0.0.1:8085/addAnchor
   // var newAnchor= {type : {object_id : '100000001',description : 'Poste',cost : 1,allow_box : false}, loc : { type: 'Point', coordinates: [ -22.336400, -47.27400]},obs : 'Try 1',buffer : 0};
   if (!req.body.anchor) return next('NO_RECORD_PAYLOAD_PROVIDED');
 
   var anchor = req.body.anchor;
-
-  // try {
-  //   anchor = JSON.parse(anchor);
-  // } catch (exc) {
-  //   return next("JSON_PARSING_ERROR"+" "+exc);
-  // }
 
   // TBD validate anchor data fields
   // Required: loc, type
@@ -67,7 +59,6 @@ Anchors.prototype.delAnchor = function (req, res, next) {
 
   // curl -X DELETE http://127.0.0.1:8085/delAnchor/56f71173fbef73c13744f91b
   if (!req.params.id) return next("NO_RECORD_ID_PROVIDED");
-  // console.log("req.params.id="+req.params.id);
 
   req.collections.anchors.removeById(req.params.id, function(error, count) {
     if (error) return next(error);
@@ -87,12 +78,6 @@ Anchors.prototype.editAnchor = function (req, res, next) {
   if (!req.body.anchor) return next("NO_RECORD_PAYLOAD_PROVIDED");
 
   var anchor = req.body.anchor;
-
-  // try {
-  //   anchor = JSON.parse(anchor);
-  // } catch (exc) {
-  //   return next("JSON_PARSING_ERROR"+" "+exc);
-  // }
 
   // TBD validate anchor data fields
   // Required: loc, type
@@ -145,14 +130,8 @@ Anchors.prototype.findAnchors = function (req, res, next) {
 
   };
 
-  // console.log("req.query.q=",req.query.q);
-  // console.log("query=",query);
-  // console.log("type of query=",typeof query);
-
-
   var pageNumber = req.query.page || "1";
   var pageSize = req.query.pageSize || AnchorsConfig.PageSize;
-  // var messages = new Messages();
 
   if (pageNumber<=0) {
      return next("PAGE_NUMBER_INVALID");
@@ -164,7 +143,5 @@ Anchors.prototype.findAnchors = function (req, res, next) {
   });
 
 }
-
-
 
 module.exports = Anchors;

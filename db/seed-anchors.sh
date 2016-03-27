@@ -3,8 +3,8 @@ export PATH=/Users/lmpsilva/Documents/Development/mongodb/bin:$PATH
 mongo fiber --eval "db.dropDatabase()"
 
 ## anchor-types
-# mongoimport --db fiber --collection anchor_types --file ./db/anchor_types.json --jsonArray
-# mongo fiber --eval "db.anchor_types.ensureIndex( { 'description': 1} )"
+mongoimport --db fiber --collection anchor_types --file ./anchor_types.json --jsonArray
+mongo fiber --eval "db.anchor_types.ensureIndex( { 'description': 1} )"
 
 ##ancoras
 mongoimport --db fiber --collection anchors --file ./anchors.json --jsonArray
