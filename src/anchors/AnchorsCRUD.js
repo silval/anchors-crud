@@ -3,11 +3,15 @@ var express = require('express'),
   path = require('path'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
-  methodOverride = require('method-override');
+  methodOverride = require('method-override'),
+  logger = require('morgan');
 
 var app = express();
 
 var session = require('express-session');
+
+var auth = require('./../server/auth.js');
+// var user = require('./users.js');
 
 var Anchors = require('./Anchors');
 var AnchorTypes = require('./AnchorTypes');
@@ -19,29 +23,50 @@ anchorsObj.getDB(AnchorsConfig.DBUrl);
 
 app.set('port', AnchorsConfig.ServicePort);
 
+app.use(bodyParser.json());
+app.use(logger('dev'));
+// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride());
+
 app.use(function(req, res, next) {
   if (!anchorsObj.collections.anchors) return next(new Error("No anchor collections."))
   req.collections = anchorsObj.collections;
   return next();
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(methodOverride());
+app.all('/*', function(req, res, next) {
+  // CORS headers
+  res.header("Access-Control-Allow-Origin", "*"); // restrict it to the required domain
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+  // Set custom headers for CORS
+  res.header('Access-Control-Allow-Headers', 'Content-type,Accept,X-Access-Token,X-Key');
+  if (req.method == 'OPTIONS') {
+    res.status(200).end();
+  } else {
+    next();
+  }
+});
 
-app.get('/listAnchors', anchorsObj.findAnchors);
-app.get('/getAnchor/:id', anchorsObj.getAnchor);
-app.get('/findAnchors', anchorsObj.findAnchors);
-app.post('/addAnchor', anchorsObj.addAnchor);
-app.put('/editAnchor/:id', anchorsObj.editAnchor);
-app.delete('/delAnchor/:id', anchorsObj.delAnchor);
+// Auth Middleware - This will check if the token is valid
+// Only the requests that start with /api/v1/* will be checked for the token.
+// Any URL's that do not follow the below pattern should be avoided unless you
+// are sure that authentication is not needed
+app.all('/api/v1/*', [require('./../server/validateRequest')]);
 
-app.get('/getAnchorType/:id', anchorTypesObj.getRecord);
-app.get('/findAnchorTypes', anchorTypesObj.findRecords);
-app.get('/listAnchorTypes', anchorTypesObj.findRecords);
-app.post('/addAnchorType', anchorTypesObj.addRecord);
-app.delete('/delAnchorType/:id', anchorTypesObj.delRecord);
-app.put('/editAnchorType/:id', anchorTypesObj.editRecord);
+app.post('/login', auth.login);
+app.get('/api/v1/listAnchors', anchorsObj.findAnchors);
+app.get('/api/v1/getAnchor/:id', anchorsObj.getAnchor);
+app.get('/api/v1/findAnchors', anchorsObj.findAnchors);
+app.post('/api/v1/addAnchor', anchorsObj.addAnchor);
+app.put('/api/v1/editAnchor/:id', anchorsObj.editAnchor);
+app.delete('/api/v1/delAnchor/:id', anchorsObj.delAnchor);
+
+app.get('/api/v1/getAnchorType/:id', anchorTypesObj.getRecord);
+app.get('/api/v1/findAnchorTypes', anchorTypesObj.findRecords);
+app.get('/api/v1/listAnchorTypes', anchorTypesObj.findRecords);
+app.post('/api/v1/addAnchorType', anchorTypesObj.addRecord);
+app.delete('/api/v1/delAnchorType/:id', anchorTypesObj.delRecord);
+app.put('/api/v1/editAnchorType/:id', anchorTypesObj.editRecord);
 
 app.all('*', function(req, res) {
   res.sendStatus(404);
