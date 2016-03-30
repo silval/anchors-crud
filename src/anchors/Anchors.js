@@ -7,32 +7,12 @@ function Anchors() {
    this.collectons=[];
 }
 
-Anchors.prototype.getDB = function(dbUrl) {
-  if (typeof dbUrl == 'undefined' || dbUrl=="") {
-    return false;
-  }
-  this.dbUrl=dbUrl;
-
-  // console.log("In getDB, initiating DB  "+this.dbUrl);
-  this.db = mongoskin.db(dbUrl, {safe: true});
-  this.collections = {
-    "anchors" : this.db.collection('anchors'),
-    "anchor_types" : this.db.collection('anchor_types')
-   };
-
-  // TBD How to check if DB or collection does not exist?
-
-  return true;
-};
-
 //
 // addAnchor: adds a new anchor record to the DB.
 // Returns a JSON object  - see example further below
 //
 Anchors.prototype.addAnchor = function (req, res, next) {
 
-  // curl --data 'anchor={"type":{"object_id":"100000001","description":"Poste","cost":1,"allow_box":false},"loc":{"type":"Point","coordinates":[-22.3364,-47.274]},"obs":"Try 1","buffer":0}' http://127.0.0.1:8085/addAnchor
-  // var newAnchor= {type : {object_id : '100000001',description : 'Poste',cost : 1,allow_box : false}, loc : { type: 'Point', coordinates: [ -22.336400, -47.27400]},obs : 'Try 1',buffer : 0};
   if (!req.body.anchor) return next('NO_RECORD_PAYLOAD_PROVIDED');
 
   var anchor = req.body.anchor;

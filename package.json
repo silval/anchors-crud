@@ -10,6 +10,7 @@
     "method-override": "^2.3.5",
     "mongodb": "^2.0.55",
     "mongoskin": "^2.0.3",
-    "morgan": "^1.7.0"
+    "morgan": "^1.7.0",
+    "user-auth": "git+https://github.com/silval/user-auth.git"
   }
 }

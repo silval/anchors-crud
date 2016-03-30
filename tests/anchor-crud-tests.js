@@ -9,15 +9,6 @@ describe('Anchors CRUD Unit tests', function() {
   var anchorsObj = new Anchors();
   // var nls = new Messages();
 
-  // GET DB
-  it('getDB() should return false if dbUrl parameter is not passed it', function() {
-    expect(anchorsObj.getDB()).to.be.false;
-  });
-
-  it('getDB() should return false if dbUrl parameter is an empty string', function() {
-    expect(anchorsObj.getDB("")).to.be.false;
-  });
-
   // GET
   it('getAnchor() should return NO_RECORD_ID_PROVIDED error if no object ID is in request', function() {
     expect(anchorsObj.getAnchor({ "params" : {} },null,function(msg){ return msg})).to.be.equal("NO_RECORD_ID_PROVIDED");

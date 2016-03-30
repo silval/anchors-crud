@@ -4,22 +4,33 @@ var express = require('express'),
   cookieParser = require('cookie-parser'),
   bodyParser = require('body-parser'),
   methodOverride = require('method-override'),
-  logger = require('morgan');
+  logger = require('morgan'),
+  mongoskin = require('mongoskin');
 
 var app = express();
 
 var session = require('express-session');
 
-var auth = require('./../server/auth.js');
+var user_auth = require('user-auth');
 // var user = require('./users.js');
 
 var Anchors = require('./Anchors');
 var AnchorTypes = require('./AnchorTypes');
 var AnchorsConfig = require('./AnchorsConfig');
 
+var auth = new user_auth();
 var anchorsObj = new Anchors();
 var anchorTypesObj = new AnchorTypes();
-anchorsObj.getDB(AnchorsConfig.DBUrl);
+
+// TBD How to check if DB or collection does not exist?
+
+var dbObj = mongoskin.db(AnchorsConfig.DBUrl, {safe: true});
+
+var collectionsObj = {
+  "anchors" : dbObj.collection('anchors'),
+  "anchor_types" : dbObj.collection('anchor_types')
+ };
+
 
 app.set('port', AnchorsConfig.ServicePort);
 
@@ -29,8 +40,9 @@ app.use(logger('dev'));
 app.use(methodOverride());
 
 app.use(function(req, res, next) {
-  if (!anchorsObj.collections.anchors) return next(new Error("No anchor collections."))
-  req.collections = anchorsObj.collections;
+  if (!collectionsObj.anchors) return next(new Error("No anchor collection."))
+  if (!collectionsObj.anchor_types) return next(new Error("No anchor types collection."))
+  req.collections = collectionsObj;
   return next();
 });
 
@@ -51,7 +63,7 @@ app.all('/*', function(req, res, next) {
 // Only the requests that start with /api/v1/* will be checked for the token.
 // Any URL's that do not follow the below pattern should be avoided unless you
 // are sure that authentication is not needed
-app.all('/api/v1/*', [require('./../server/validateRequest')]);
+app.all('/api/v1/*', auth.validateRequest);
 
 app.post('/login', auth.login);
 app.get('/api/v1/listAnchors', anchorsObj.findAnchors);
@@ -89,3 +101,7 @@ if (require.main === module) {
   exports.shutdown = shutdown;
   exports.port = app.get('port');
 }
+// sample query URLs
+// curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' http://127.0.0.1:8085/login
+// curl -H "Content-Type: application/json" -X GET -d '{"access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE0NTk4OTA1NTkzMDksInVzZXJuYW1lIjoiam9lQGRvZS5jb20ifQ.X6JygHAmqZj1UbmI_mUWoPJ4jVadiz76PgChVMqj53I","x_key":"joe@doe.com"}' http://127.0.0.1:8085/api/v1/listAnchorTypes
+// curl ...  --data 'anchor={"type":{"object_id":"100000001","description":"Poste","cost":1,"allow_box":false},"loc":{"type":"Point","coordinates":[-22.3364,-47.274]},"obs":"Try 1","buffer":0}' http://127.0.0.1:8085/api/v1/addAnchor
