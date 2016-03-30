@@ -12,7 +12,6 @@ var app = express();
 var session = require('express-session');
 
 var user_auth = require('user-auth');
-// var user = require('./users.js');
 
 var Anchors = require('./Anchors');
 var AnchorTypes = require('./AnchorTypes');
@@ -39,13 +38,6 @@ app.use(logger('dev'));
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride());
 
-app.use(function(req, res, next) {
-  if (!collectionsObj.anchors) return next(new Error("No anchor collection."))
-  if (!collectionsObj.anchor_types) return next(new Error("No anchor types collection."))
-  req.collections = collectionsObj;
-  return next();
-});
-
 app.all('/*', function(req, res, next) {
   // CORS headers
   res.header("Access-Control-Allow-Origin", "*"); // restrict it to the required domain
@@ -59,6 +51,13 @@ app.all('/*', function(req, res, next) {
   }
 });
 
+app.use(function(req, res, next) {
+  if (!collectionsObj.anchors) return next(new Error("No anchor collection."))
+  if (!collectionsObj.anchor_types) return next(new Error("No anchor types collection."))
+  req.collections = collectionsObj;
+  return next();
+});
+
 // Auth Middleware - This will check if the token is valid
 // Only the requests that start with /api/v1/* will be checked for the token.
 // Any URL's that do not follow the below pattern should be avoided unless you
@@ -66,17 +65,26 @@ app.all('/*', function(req, res, next) {
 app.all('/api/v1/*', auth.validateRequest);
 
 app.post('/login', auth.login);
-app.get('/api/v1/listAnchors', anchorsObj.findAnchors);
-app.get('/api/v1/getAnchor/:id', anchorsObj.getAnchor);
-app.get('/api/v1/findAnchors', anchorsObj.findAnchors);
-app.post('/api/v1/addAnchor', anchorsObj.addAnchor);
-app.put('/api/v1/editAnchor/:id', anchorsObj.editAnchor);
-app.delete('/api/v1/delAnchor/:id', anchorsObj.delAnchor);
 
-app.get('/api/v1/getAnchorType/:id', anchorTypesObj.getRecord);
+app.use(function(req, res, next) {
+   req.collectionId="anchors";
+   return next();
+});
+app.get('/api/v1/listAnchors', anchorsObj.findRecords);
+app.get('/api/v1/findAnchors', anchorsObj.findRecords);
+app.post('/api/v1/addAnchor', anchorsObj.addRecord);
+app.get('/api/v1/getAnchor/:id', anchorsObj.getRecord);
+app.put('/api/v1/editAnchor/:id', anchorsObj.editRecord);
+app.delete('/api/v1/delAnchor/:id', anchorsObj.delRecord);
+
+app.use(function(req, res, next) {
+   req.collectionId="anchor_types";
+   return next();
+});
 app.get('/api/v1/findAnchorTypes', anchorTypesObj.findRecords);
 app.get('/api/v1/listAnchorTypes', anchorTypesObj.findRecords);
 app.post('/api/v1/addAnchorType', anchorTypesObj.addRecord);
+app.get('/api/v1/getAnchorType/:id', anchorTypesObj.getRecord);
 app.delete('/api/v1/delAnchorType/:id', anchorTypesObj.delRecord);
 app.put('/api/v1/editAnchorType/:id', anchorTypesObj.editRecord);
 

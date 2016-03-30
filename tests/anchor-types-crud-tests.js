@@ -19,11 +19,11 @@ describe('Anchor Types CRUD Unit tests', function() {
 
   // FIND
   it('findRecords() should return PAGE_NUMBER_INVALID error if pageNumber is lower than 1', function() {
-    expect(anchorTypesObj.findRecords({ "query" : { "page" : "0", "q" : "{}" }},null,function(msg){ return msg})).to.be.equal("PAGE_NUMBER_INVALID");
+    expect(anchorTypesObj.findRecords({ "query" : { "p" : "0", "q" : "{}" }},null,function(msg){ return msg})).to.be.equal("PAGE_NUMBER_INVALID");
   });
 
   it('findRecords() should return JSON_PARSING_ERROR error if if malformed query json object is in request', function() {
-    expect(anchorTypesObj.findRecords({ "query" : { "page" : "0", "q" : "{ 'hello' }"}},null,function(msg){ return msg})).to.have.string("JSON_PARSING_ERROR");
+    expect(anchorTypesObj.findRecords({ "query" : { "p" : "0", "q" : "{ 'hello' }"}},null,function(msg){ return msg})).to.have.string("JSON_PARSING_ERROR");
   });
 
   // ADD
