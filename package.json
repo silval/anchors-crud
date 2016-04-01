@@ -2,6 +2,7 @@
   "devDependencies": {
     "body-parser": "^1.15.0",
     "chai": "^3.5.0",
+    "common-artifacts": "git+https://github.com/silval/common-artifacts.git",
     "cookie-parser": "^1.4.1",
     "express": "^4.13.4",
     "express-session": "^1.13.0",

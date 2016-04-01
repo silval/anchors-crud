@@ -15,23 +15,27 @@ var user_auth = require('user-auth');
 
 var Anchors = require('./Anchors');
 var AnchorTypes = require('./AnchorTypes');
-var AnchorsConfig = require('./AnchorsConfig');
+var SystemConfig = require('common-artifacts').systemConfig;
 
 var auth = new user_auth();
 var anchorsObj = new Anchors();
 var anchorTypesObj = new AnchorTypes();
 
+var Users = auth.usersCRUD;
+var usersObj = new Users();
+
 // TBD How to check if DB or collection does not exist?
 
-var dbObj = mongoskin.db(AnchorsConfig.DBUrl, {safe: true});
+var dbObj = mongoskin.db(SystemConfig.DBUrl, {safe: true});
 
 var collectionsObj = {
   "anchors" : dbObj.collection('anchors'),
-  "anchor_types" : dbObj.collection('anchor_types')
+  "anchor_types" : dbObj.collection('anchor_types'),
+  "users" : dbObj.collection('users')
  };
 
 
-app.set('port', AnchorsConfig.ServicePort);
+app.set('port', SystemConfig.ServicePort);
 
 app.use(bodyParser.json());
 app.use(logger('dev'));
@@ -54,6 +58,7 @@ app.all('/*', function(req, res, next) {
 app.use(function(req, res, next) {
   if (!collectionsObj.anchors) return next(new Error("No anchor collection."))
   if (!collectionsObj.anchor_types) return next(new Error("No anchor types collection."))
+  if (!collectionsObj.users) return next(new Error("No users collection."))
   req.collections = collectionsObj;
   return next();
 });
@@ -87,6 +92,14 @@ app.post('/api/v1/addAnchorType', anchorTypesObj.addRecord);
 app.get('/api/v1/getAnchorType/:id', anchorTypesObj.getRecord);
 app.delete('/api/v1/delAnchorType/:id', anchorTypesObj.delRecord);
 app.put('/api/v1/editAnchorType/:id', anchorTypesObj.editRecord);
+
+app.use(function(req, res, next) {
+   req.collectionId="users";
+   return next();
+});
+app.get('/api/v1/admin/findUsers', anchorTypesObj.findRecords);
+app.get('/api/v1/admin/listUsers', anchorTypesObj.findRecords);
+
 
 app.all('*', function(req, res) {
   res.sendStatus(404);
